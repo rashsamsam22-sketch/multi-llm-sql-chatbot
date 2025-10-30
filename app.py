@@ -15,6 +15,8 @@ from sqlalchemy import create_engine, text, inspect
 import uuid
 warnings.filterwarnings('ignore')
 
+CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY")
+
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-change-this-in-production'
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -39,25 +41,25 @@ LLM_CONFIGS = {
     'llama3.1-8b': {
         'name': 'Llama 3.1 8B',
         'model': 'llama3.1-8b',
-        'api_key': 'api_key',
+        'api_key': CEREBRAS_API_KEY,
         'temperature': 0.3
     },
     'llama-4-scout': {
         'name': 'Llama 4 Scout',
         'model': 'llama-4-scout-17b-16e-instruct',
-        'api_key': 'api_key',
+        'api_key': CEREBRAS_API_KEY,
         'temperature': 0.3
     },
     'gpt-oss-120b': {
         'name': 'GPT-OSS 120B',
         'model': 'gpt-oss-120b',
-        'api_key': 'api_key',
+        'api_key': CEREBRAS_API_KEY,
         'temperature': 0.3
     },
     'qwen-3-32b': {
         'name': 'Qwen 3 32B',
         'model': 'qwen-3-32b',
-        'api_key': 'api_key',
+        'api_key': CEREBRAS_API_KEY,
         'temperature': 0.3
     }
 }

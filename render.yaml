@@ -2,7 +2,7 @@ services:
   - type: web
     name: flask-rag-app
     env: python
-    pythonVersion: "3.11"
+    pythonVersion: "3.11"        # ← THIS IS CRITICAL
     region: oregon
     plan: free
 
@@ -17,10 +17,12 @@ services:
         sync: false
       - key: DATABASE_URL
         fromDatabase:
-          name: rag-postgres          # <-- exact name of your DB instance
+          name: rag-postgres
           property: connectionString
 
     preDeployCommand: |
-      # Clean up things that break the build
-      sed -i '/ninja/d' requirements.txt || true
-      sed -i 's/psycopg2==2.9.10/psycopg2-binary==2.9.10/' requirements.txt || true
+      echo "Removing Rust build tools..." && \
+      sed -i '/ninja/d' requirements.txt || true && \
+      sed -i '/maturin/d' requirements.txt || true && \
+      sed -i '/pyo3/d' requirements.txt || true && \
+      sed -i '/setuptools-rust/d' requirements.txt || true

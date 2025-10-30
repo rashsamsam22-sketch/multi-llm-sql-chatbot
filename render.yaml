@@ -2,7 +2,7 @@ services:
   - type: web
     name: flask-rag-app
     env: python
-    pythonVersion: "3.11"        # ← CRITICAL: Use 3.11
+    pythonVersion: "3.11"
     region: oregon
     plan: free
 
@@ -15,9 +15,12 @@ services:
     envVars:
       - key: CEREBRAS_API_KEY
         sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: rag-postgres          # <-- exact name of your DB instance
+          property: connectionString
 
     preDeployCommand: |
-      echo "Cleaning build tools..." && \
-      sed -i '/ninja/d' requirements.txt || true && \
-      sed -i '/pywin32/d' requirements.txt || true && \
-      sed -i '/maturin/d' requirements.txt || true
+      # Clean up things that break the build
+      sed -i '/ninja/d' requirements.txt || true
+      sed -i 's/psycopg2==2.9.10/psycopg2-binary==2.9.10/' requirements.txt || true

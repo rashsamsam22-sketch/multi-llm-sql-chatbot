@@ -29,13 +29,12 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 # CONFIGURATION
 # ============================================
 
-DB_CONFIG = {
-    'host': 'localhost',
-    'port': '3306',
-    'username': 'root',
-    'password': '123',
-    'database_schema': 'dynamic_db'
-}
+import os
+from langchain_community.utilities import SQLDatabase
+from sqlalchemy import create_engine, text
+import re
+
+
 
 LLM_CONFIGS = {
     'llama3.1-8b': {
@@ -70,33 +69,62 @@ ALLOWED_EXTENSIONS = {'csv', 'xlsx', 'xls'}
 # DATABASE FUNCTIONS
 # ============================================
 
-def get_engine():
-    """Create SQLAlchemy engine"""
-    mysql_uri = f"mysql+pymysql://{DB_CONFIG['username']}:{DB_CONFIG['password']}@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database_schema']}"
-    return create_engine(mysql_uri)
+# ----------------------------------------------------------------------
+# POSTGRESQL – Render-managed DB
+# ----------------------------------------------------------------------
+import os
+import re
+from sqlalchemy import create_engine, text, inspect
+from langchain_community.utilities import SQLDatabase
 
-def create_database_if_not_exists():
-    """Create database if it doesn't exist"""
-    try:
-        # Connect without database
-        mysql_uri = f"mysql+pymysql://{DB_CONFIG['username']}:{DB_CONFIG['password']}@{DB_CONFIG['host']}:{DB_CONFIG['port']}"
-        engine = create_engine(mysql_uri)
-        
-        with engine.connect() as conn:
-            conn.execute(text(f"CREATE DATABASE IF NOT EXISTS {DB_CONFIG['database_schema']}"))
-            conn.commit()
-        
-        print(f"✓ Database '{DB_CONFIG['database_schema']}' ready")
-        return True
-    except Exception as e:
-        print(f"✗ Database creation failed: {e}")
-        return False
+# -------------------------------------------------
+# 1. Grab the connection string from Render
+# -------------------------------------------------
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL environment variable is missing!")
+
+# Render gives `postgres://…` – we need `postgresql+psycopg2://`
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg2://", 1)
+
+# Render requires SSL for external connections
+if "?sslmode" not in DATABASE_URL:
+    DATABASE_URL += "?sslmode=require"
+
+# -------------------------------------------------
+# 2. Global engine + LangChain wrapper
+# -------------------------------------------------
+engine = create_engine(DATABASE_URL, pool_pre_ping=True, future=True)
+
+# LangChain helper (used by your existing code)
+db = SQLDatabase.from_uri(DATABASE_URL, sample_rows_in_table_info=3)
+
+# -------------------------------------------------
+# 3. Helper functions – **replace** the old ones
+# -------------------------------------------------
+def get_engine():
+    """Return the global SQLAlchemy engine."""
+    return engine
 
 def setup_database():
-    """Initialize database connection"""
-    mysql_uri = f"mysql+pymysql://{DB_CONFIG['username']}:{DB_CONFIG['password']}@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database_schema']}"
-    db = SQLDatabase.from_uri(mysql_uri, sample_rows_in_table_info=3)
+    """Return the LangChain SQLDatabase wrapper."""
     return db
+
+# (Optional) create a default schema if you ever want one
+def _ensure_default_schema():
+    try:
+        # The DB name is the last part before any ?params
+        db_name = re.search(r"/([^?]+)", DATABASE_URL).group(1)
+        with engine.connect() as conn:
+            conn.execute(text("COMMIT"))                     # exit any transaction
+            conn.execute(text(f"CREATE SCHEMA IF NOT EXISTS {db_name}"))
+    except Exception as e:
+        print(f"[WARN] Schema setup: {e}")
+
+# Run once at import time
+_ensure_default_schema()
+
 
 def allowed_file(filename):
     """Check if file extension is allowed"""
@@ -193,8 +221,6 @@ def delete_user_table(user_id, table_name):
     except Exception as e:
         return {'success': False, 'error': str(e)}
 
-# Initialize database on startup
-create_database_if_not_exists()
 
 # ============================================
 # LLM FUNCTIONS

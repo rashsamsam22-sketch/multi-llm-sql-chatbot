@@ -2,23 +2,22 @@ services:
   - type: web
     name: flask-rag-app
     env: python
-    pythonVersion: "3.11"
+    pythonVersion: "3.11"        # ← CRITICAL: Use 3.11
     region: oregon
     plan: free
 
     buildCommand: |
       pip install --upgrade pip && \
-      pip install --only-binary=:all: --prefer-binary -r requirements.txt || \
-      (echo "Failed with wheels, falling back..." && pip install -r requirements.txt)
+      pip install --only-binary=:all: -r requirements.txt
 
     startCommand: python app.py
 
     envVars:
-      - key: CERABRAS_API_KEY
+      - key: CEREBRAS_API_KEY
         sync: false
 
     preDeployCommand: |
-      echo "Cleaning bad packages..." && \
+      echo "Cleaning build tools..." && \
+      sed -i '/ninja/d' requirements.txt || true && \
       sed -i '/pywin32/d' requirements.txt || true && \
-      sed -i '/maturin/d' requirements.txt || true && \
-      sed -i '/pyo3/d' requirements.txt || true
+      sed -i '/maturin/d' requirements.txt || true

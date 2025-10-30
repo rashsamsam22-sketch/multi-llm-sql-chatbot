@@ -2,7 +2,7 @@ services:
   - type: web
     name: flask-rag-app
     env: python
-    pythonVersion: "3.11"        # ← THIS IS CRITICAL
+    pythonVersion: "3.11"
     region: oregon
     plan: free
 
@@ -21,8 +21,7 @@ services:
           property: connectionString
 
     preDeployCommand: |
-      echo "Removing Rust build tools..." && \
-      sed -i '/ninja/d' requirements.txt || true && \
-      sed -i '/maturin/d' requirements.txt || true && \
-      sed -i '/pyo3/d' requirements.txt || true && \
+      sed -i '/ninja/d' requirements.txt || true
+      sed -i '/maturin/d' requirements.txt || true
+      sed -i '/pyo3/d' requirements.txt || true
       sed -i '/setuptools-rust/d' requirements.txt || true

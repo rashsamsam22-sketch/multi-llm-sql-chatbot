@@ -5,10 +5,10 @@ services:
     region: oregon
     plan: free
 
-    # Force pre-built wheels only (NO Rust/C compilation)
     buildCommand: |
       pip install --upgrade pip && \
-      pip install --only-binary=:all: -r requirements.txt
+      pip install --only-binary=:all: --prefer-binary -r requirements.txt || \
+      (echo "Failed with wheels, falling back..." && pip install -r requirements.txt)
 
     startCommand: python app.py
 
@@ -16,8 +16,8 @@ services:
       - key: CERABRAS_API_KEY
         sync: false
 
-    # Optional: Clean up Windows-only packages automatically
     preDeployCommand: |
-      echo "Removing Windows-only packages..." && \
+      echo "Cleaning bad packages..." && \
       sed -i '/pywin32/d' requirements.txt || true && \
-      sed -i '/pypiwin32/d' requirements.txt || true
+      sed -i '/maturin/d' requirements.txt || true && \
+      sed -i '/pyo3/d' requirements.txt || true

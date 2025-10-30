@@ -2,9 +2,22 @@ services:
   - type: web
     name: flask-rag-app
     env: python
-    region: oregon        # or choose your region
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python app.py"
+    region: oregon
+    plan: free
+
+    # Force pre-built wheels only (NO Rust/C compilation)
+    buildCommand: |
+      pip install --upgrade pip && \
+      pip install --only-binary=:all: -r requirements.txt
+
+    startCommand: python app.py
+
     envVars:
       - key: CERABRAS_API_KEY
         sync: false
+
+    # Optional: Clean up Windows-only packages automatically
+    preDeployCommand: |
+      echo "Removing Windows-only packages..." && \
+      sed -i '/pywin32/d' requirements.txt || true && \
+      sed -i '/pypiwin32/d' requirements.txt || true

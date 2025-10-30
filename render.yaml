@@ -2,6 +2,7 @@ services:
   - type: web
     name: flask-rag-app
     env: python
+    pythonVersion: "3.11"
     region: oregon
     plan: free
 

@@ -1,13 +1,11 @@
 services:
   - type: web
     name: flask-rag-app
-    env: python
+    env: docker  # ← KEY: Use Docker runtime
     region: oregon
     plan: free
 
-    buildCommand: |
-      pip install --upgrade pip && \
-      pip install --only-binary=:all: -r requirements.txt
+    dockerfilePath: ./Dockerfile  # ← Points to your Dockerfile
 
     startCommand: python app.py
 

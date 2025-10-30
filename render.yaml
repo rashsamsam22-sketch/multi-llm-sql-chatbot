@@ -6,7 +6,6 @@ services:
     plan: free
 
     buildCommand: |
-      python3.11 -m venv $VIRTUAL_ENV && \
       pip install --upgrade pip && \
       pip install --only-binary=:all: -r requirements.txt
 
@@ -19,10 +18,3 @@ services:
         fromDatabase:
           name: rag-postgres
           property: connectionString
-
-    preDeployCommand: |
-      echo "=== CLEANING BUILD ===" && \
-      rm -f poetry.lock pyproject.toml && \
-      sed -i '/ninja/d' requirements.txt || true && \
-      sed -i '/pywinpty/d' requirements.txt || true && \
-      sed -i '/PyMySQL/d' requirements.txt || true

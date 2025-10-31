@@ -174,8 +174,6 @@ lazy_loader==0.4
 libclang==18.1.1
 logfire-api==3.16.1
 lxml==6.0.2
-manim==0.19.0
-ManimPango==0.6.0
 mapbox_earcut==1.0.3
 Markdown==3.9
 markdown-it-py==3.0.0

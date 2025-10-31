@@ -157,11 +157,11 @@ langchain-community==0.2.7
 langchain-core==0.2.38
 langchain-openai==0.1.8
 langchain-text-splitters==0.2.4
-langgraph==0.2.7
-langgraph-checkpoint==3.0.0
-langgraph-prebuilt==1.0.1
-langgraph-sdk==0.2.9
-langsmith==0.1.75
+langgraph
+langgraph-checkpoint
+langgraph-prebuilt
+langgraph-sdk
+langsmith
 lazy_loader==0.4
 libclang==18.1.1
 logfire-api==3.16.1

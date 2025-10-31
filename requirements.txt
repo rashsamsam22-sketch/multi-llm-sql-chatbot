@@ -29,7 +29,6 @@ build==1.2.2.post1
 CacheControl==0.14.3
 cachetools==5.5.2
 cerebras==0.0.1
-# cerebras_cloud_sdk==1.56.1 # This is likely needed if you use cerebras
 certifi==2024.8.30
 cffi==1.17.1
 cfgv==3.4.0
@@ -155,12 +154,12 @@ keras==3.11.3
 keyring==25.6.0
 kiwisolver==1.4.7
 langchain
-# langchain-classic==1.0.0 # REMOVED in previous step
-# langchain-cerebras==0.5.0 # REMOVED due to conflict with google-genai
+# langchain-classic==1.0.0 # REMOVED 
+# langchain-cerebras==0.5.0 # REMOVED 
 langchain-community
 langchain-core
 langchain-google-genai==3.0.0
-langchain-huggingface==0.1.2
+# langchain-huggingface==0.1.2 # REMOVED due to conflict with google-genai
 langchain-openai
 langchain-text-splitters==0.3.2
 langgraph

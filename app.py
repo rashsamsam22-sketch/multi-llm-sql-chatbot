@@ -244,7 +244,7 @@ def get_schema(user_id):
         for table in user_tables:
             columns = inspector.get_columns(table)
             col_info = ", ".join([f"{col['name']} ({col['type']})" for col in columns])
-            schema_info.append(f"Table: {table}\nUse this exact name in queries: `{table}`\nColumns: {col_info}")
+            schema_info.append(f"Table: {table}\nUse exactly: \"{table}\"\nColumns: {col_info}")
         
         return "\n\n".join(schema_info)
     except Exception as e:
@@ -271,16 +271,20 @@ def extract_sql_query(response):
 
 def create_sql_chain(llm, user_id):
     """Create SQL query generation chain"""
-    template = """Based on the table schema below, write a SQL query that would answer the user's question.
-Remember: Only provide the SQL query, don't include anything else.
-Provide the SQL query in a single line, don't add line breaks.
+    template = """You are a PostgreSQL expert. Write a SQL query to answer the user's question.
+    CRITICAL RULES:
+    1. Use DOUBLE QUOTES for table/column names: "user123_sales"
+    2. NEVER use backticks (`) — they break PostgreSQL
+    3. Use information_schema for metadata: 
+    - Column names/types: SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'your_table';
+    - DO NOT use pragma_table_info() — it's SQLite only
 
-Table Schema:
-{schema}
+    Table Schema (use exact table names):
+    {schema}
 
-Question: {question}
-SQL Query:
-"""
+    Question: {question}
+    SQL Query:
+    """
     prompt = ChatPromptTemplate.from_template(template)
     
     chain = (

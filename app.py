@@ -112,18 +112,8 @@ def setup_database():
     return db
 
 # (Optional) create a default schema if you ever want one
-def _ensure_default_schema():
-    try:
-        # The DB name is the last part before any ?params
-        db_name = re.search(r"/([^?]+)", DATABASE_URL).group(1)
-        with engine.connect() as conn:
-            conn.execute(text("COMMIT"))                     # exit any transaction
-            conn.execute(text(f"CREATE SCHEMA IF NOT EXISTS {db_name}"))
-    except Exception as e:
-        print(f"[WARN] Schema setup: {e}")
 
-# Run once at import time
-_ensure_default_schema()
+
 
 
 def allowed_file(filename):

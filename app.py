@@ -204,11 +204,13 @@ def delete_user_table(user_id, table_name):
         
         engine = get_engine()
         with engine.connect() as conn:
-            conn.execute(text(f"DROP TABLE IF EXISTS `{table_name}`"))
+            # Quote table name to handle special characters
+            conn.execute(text(f'DROP TABLE IF EXISTS "{table_name}"'))
             conn.commit()
         
         return {'success': True}
     except Exception as e:
+        print(f"Delete error: {e}")  # Log for debugging
         return {'success': False, 'error': str(e)}
 
 

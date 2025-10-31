@@ -159,7 +159,6 @@ langchain-cerebras==0.5.0
 langchain-community==0.3.7
 langchain-core==0.3.63
 langchain-google-genai==2.0.4
-langchain-groq==1.0.0
 langchain-huggingface==0.1.2
 langchain-openai==0.3.19
 langchain-text-splitters==0.3.2

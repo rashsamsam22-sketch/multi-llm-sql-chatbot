@@ -244,8 +244,7 @@ def get_schema(user_id):
         for table in user_tables:
             columns = inspector.get_columns(table)
             col_info = ", ".join([f"{col['name']} ({col['type']})" for col in columns])
-            original_name = table.replace(f"{user_id}_", "")
-            schema_info.append(f"Table: {table} (Original: {original_name})\nColumns: {col_info}")
+            schema_info.append(f"Table: {table}\nUse this exact name in queries: `{table}`\nColumns: {col_info}")
         
         return "\n\n".join(schema_info)
     except Exception as e:

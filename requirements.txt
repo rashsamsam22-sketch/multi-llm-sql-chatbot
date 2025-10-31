@@ -316,7 +316,6 @@ sniffio==1.3.1
 soupsieve==2.6
 SQLAlchemy==2.0.35
 sqlparse==0.5.1
-pysrt==1.1.2
 sse-starlette==2.3.6
 stack-data==0.6.3
 starlette==0.47.0

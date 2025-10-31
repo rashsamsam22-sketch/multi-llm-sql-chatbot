@@ -155,7 +155,6 @@ kiwisolver==1.4.7
 langchain==0.2.7
 langchain-community==0.2.7
 langchain-core==0.2.38
-langchain-google-genai==2.0.4
 langchain-openai==0.1.8
 langchain-text-splitters==0.2.4
 langgraph==0.2.7

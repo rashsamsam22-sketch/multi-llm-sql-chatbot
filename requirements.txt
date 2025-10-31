@@ -15,7 +15,7 @@ asgiref==3.8.1
 asttokens==2.4.1
 astunparse==1.6.3
 async-lru==2.0.4
-attrs==18.2.0
+attrs==24.2.0
 av==13.1.0
 babel==2.16.0
 beautifulsoup4==4.12.3

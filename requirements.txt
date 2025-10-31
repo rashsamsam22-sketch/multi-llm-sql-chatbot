@@ -203,7 +203,6 @@ nbconvert==7.16.4
 nbformat==5.10.4
 nbstripout==0.8.1
 nest-asyncio==1.6.0
-network==0.1
 networkx==3.3
 neural==0.1.0
 nltk==3.9.2

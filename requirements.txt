@@ -106,7 +106,7 @@ greenlet
 griffe==1.7.3
 groq==0.33.0
 grpcio==1.76.0
-grpcio-status==1.76.0
+grpcio-status # REMOVED ==1.76.0
 gspread==6.2.1
 gunicorn==23.0.0
 h11==0.14.0

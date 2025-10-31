@@ -154,14 +154,11 @@ keras==3.11.3
 keyring==25.6.0
 kiwisolver==1.4.7
 langchain
-# langchain-classic==1.0.0 # REMOVED 
-# langchain-cerebras==0.5.0 # REMOVED 
 langchain-community
 langchain-core
 langchain-google-genai==3.0.0
-# langchain-huggingface==0.1.2 # REMOVED due to conflict with google-genai
 langchain-openai
-langchain-text-splitters==0.3.2
+# langchain-text-splitters==0.3.2 # REMOVED due to conflict with google-genai
 langgraph
 langgraph-checkpoint==3.0.0
 langgraph-prebuilt==1.0.1

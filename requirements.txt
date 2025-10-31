@@ -305,7 +305,7 @@ scikit-network==0.33.3
 scipy==1.14.1
 screeninfo==0.8.1
 Send2Trash==1.8.3
-sentence-transformers==2.2.2
+sentence-transformers
 setuptools==75.1.0
 shapely==2.1.2
 shellingham==1.5.4

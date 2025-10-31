@@ -178,7 +178,7 @@ mcp==1.9.2
 mdurl==0.1.2
 mistralai==1.8.1
 mistune==3.0.2
-ml_dtypes # REMOVED ==0.5.3
+ml_dtypes
 moderngl==5.12.0
 moderngl-window==3.1.1
 more-itertools==10.7.0
@@ -232,7 +232,7 @@ prometheus_client==0.21.0
 prompt_toolkit==3.0.48
 propcache==0.4.1
 proto-plus==1.26.1
-protobuf==6.31.1
+protobuf # REMOVED ==6.31.1
 psutil==6.0.0
 psycopg2-binary==2.9.10
 pure_eval==0.2.3

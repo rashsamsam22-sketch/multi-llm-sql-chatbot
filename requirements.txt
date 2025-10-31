@@ -102,7 +102,7 @@ google-auth-oauthlib==1.2.2
 google-genai==1.18.0
 google-pasta==0.2.0
 googleapis-common-protos==1.71.0
-greenlet # REMOVED ==3.2.4
+greenlet
 griffe==1.7.3
 groq==0.33.0
 grpcio==1.76.0
@@ -250,7 +250,7 @@ pydantic-settings==2.11.0
 pydeck==0.9.1
 pydub==0.25.1
 pydyf==0.11.0
-pyee==13.0.0
+pyee
 pyglet==2.1.6
 pyglm==2.8.2
 Pygments==2.18.0

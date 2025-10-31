@@ -5,6 +5,6 @@ SQLAlchemy
 psycopg2-binary
 openpyxl
 xlrd
-langchain-core
-langchain-community
-langchain-cerebras
+langchain-community==0.3.7
+langchain-core==0.3.63
+langchain-cerebras==0.5.0
